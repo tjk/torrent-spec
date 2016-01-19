@@ -26,11 +26,7 @@ class ClientRunner
       end
 
       # check service started correctly (exposed at least command port)
-      # TODO
-    end
-
-    def running?
-      !!@pid
+      wait_until_port_reachable(@env['cmdport'])
     end
 
     def stop
