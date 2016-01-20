@@ -13,24 +13,30 @@ class ClientRunner
 
   class << self
     def start
-      raise_if_port_in_use!(@env['cmdport'])
+      raise_if_port_in_use!(cmdport)
 
       # start service
       @pid = fork do
+        puts "[*] Starting torrent client (command port #{cmdport})..."
         exec(@env['startcmd'])
       end
 
       # make sure we will clean up nicely...
       at_exit do
         stop
+        puts '[*] Stopped torrent client.'
       end
 
       # check service started correctly (exposed at least command port)
-      wait_until_port_reachable(@env['cmdport'])
+      wait_until_port_reachable(cmdport)
     end
 
     def stop
       Process.kill('TERM', @pid) # TODO more cleanly?
+    end
+
+    def cmdport
+      @env['cmdport']
     end
   end
 end

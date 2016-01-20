@@ -4,10 +4,13 @@ require 'json'
 
 RSpec.describe 'Torrent Client' do
   before(:all) do
+    TrackerMock.start
     ClientRunner.start
   end
 
-  let(:http) { Net::HTTP.new('localhost', 8000) }
+  let(:http) do
+    Net::HTTP.new('localhost', ClientRunner.cmdport)
+  end
 
   it 'responds to ping request' do
     res = http.get('/api/ping')
