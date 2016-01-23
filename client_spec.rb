@@ -22,7 +22,7 @@ RSpec.describe 'Torrent Client' do
   it 'receives correct data when hitting mock tracker' do
     path = TrackerMock.announce_path + '?wut=yo'
     TrackerMock.on_announce do |request|
-      expect(request.path).to eq(path)
+      expect(request.fullpath).to eq(path)
     end
     trackerhttp.get(path)
   end
